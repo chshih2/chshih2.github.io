@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-03-22T12:38:44-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">Markdown Template</title><link href="http://localhost:4000/blog/2020/03/22/markdown-template/" rel="alternate" type="text/html" title="Markdown Template" /><published>2020-03-22T00:00:00-05:00</published><updated>2020-03-22T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/03/22/markdown-template</id><content type="html" xml:base="http://localhost:4000/blog/2020/03/22/markdown-template/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;Here are all the most important features I need for my post template and their
+markdown formats.&lt;/p&gt;
+
+&lt;p&gt;This &lt;a href=&quot;https://programminghistorian.org/en/lessons/getting-started-with-markdown&quot;&gt;markdown&lt;/a&gt; article gave a nice introduction of markdown file.
+I got the formats to create &lt;a href=&quot;#sections&quot;&gt;&lt;strong&gt;sections&lt;/strong&gt;&lt;/a&gt;,
+&lt;a href=&quot;#lists&quot;&gt;&lt;strong&gt;lists&lt;/strong&gt;&lt;/a&gt;, &lt;a href=&quot;#links&quot;&gt;&lt;strong&gt;links&lt;/strong&gt;&lt;/a&gt;, and &lt;a href=&quot;#horizontals&quot;&gt;&lt;strong&gt;separation lines&lt;/strong&gt;&lt;/a&gt;.
+To import &lt;a href=&quot;#images&quot;&gt;&lt;strong&gt;images&lt;/strong&gt;&lt;/a&gt;, I used HTML syntax like how &lt;a href=&quot;https://stackoverflow.com/questions/14675913/changing-image-size-in-markdown&quot;&gt;kushdilip&lt;/a&gt; did.
+For &lt;a href=&quot;#bookmarks&quot;&gt;&lt;strong&gt;bookmarks&lt;/strong&gt;&lt;/a&gt;, I got the answer from &lt;a href=&quot;https://stackoverflow.com/questions/5319754/cross-reference-named-anchor-in-markdown&quot;&gt;Steve&lt;/a&gt;.
+For &lt;a href=&quot;#equations&quot;&gt;&lt;strong&gt;equations&lt;/strong&gt;&lt;/a&gt;, I used &lt;a href=&quot;https://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-section&quot;&gt;&lt;a name=&quot;sections&quot;&gt;&lt;/a&gt;Section&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# This gives me titles
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The format of sentences and paragraphs follows LaTex. Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;`&lt;/code&gt; … &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;`&lt;/code&gt; for &lt;a href=&quot;https://www.markdownguide.org/basic-syntax/&quot;&gt;escaping&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;heading-this-gives-me-titles&quot;&gt;This gives me titles&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-list&quot;&gt;&lt;a name=&quot;lists&quot;&gt;&lt;/a&gt;List&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*  List
+    * Item
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Use indents to create nested items. The symbols will be different at each level automatically.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;List
+    &lt;ul&gt;
+      &lt;li&gt;Item&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1.  List 1
+    1. Item 1
+    2. Item 2
+2.  List 2
+    1. Item 1
+    2. Item 2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;List 1
+    &lt;ol&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;List 2
+    &lt;ol&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-link&quot;&gt;&lt;a name=&quot;links&quot;&gt;&lt;/a&gt;Link&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go [there][1]
+[1]:https:...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-separation-lines&quot;&gt;&lt;a name=&quot;horizontals&quot;&gt;&lt;/a&gt;Separation Lines&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-image&quot;&gt;&lt;a name=&quot;images&quot;&gt;&lt;/a&gt;Image&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;img src=&quot;turtle.jpg&quot; alt=&quot;drawing&quot; width=&quot;200&quot;/&amp;gt;
+&amp;lt;img src=&quot;https://images.unsplash.com/photo-1518467166778-b88f373ffec7?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1778&amp;amp;q=80&quot; alt=&quot;turtle1&quot; width=&quot;200&quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;turtle.jpg&quot; alt=&quot;turtle2&quot; width=&quot;200&quot; /&gt;
+&lt;img src=&quot;https://images.unsplash.com/photo-1518467166778-b88f373ffec7?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1778&amp;amp;q=80&quot; alt=&quot;drawing&quot; width=&quot;200&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I used HTML instead of another common approach &lt;a href=&quot;https://programminghistorian.org/en/lessons/getting-started-with-markdown&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;![]()&lt;/code&gt;&lt;/a&gt; because it's easier to scale the image under my theme template.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-bookmark&quot;&gt;&lt;a name=&quot;bookmarks&quot;&gt;&lt;/a&gt;Bookmark&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Take me [here](#bookmark)
+Put anchor point &amp;lt;a name=&quot;bookmark&quot;&amp;gt;&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-equation&quot;&gt;&lt;a name=&quot;equations&quot;&gt;&lt;/a&gt;Equation&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$
+or
+\begin{equation}x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}\end{equation}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.&lt;/script&gt;
+
+&lt;p&gt;I use MathJax instead of generating images directly from LaTex because it makes searching easier.&lt;/p&gt;
+
+&lt;p&gt;To enable MathJax, do this in your script:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script type=&quot;text/javascript&quot; async
+  src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&amp;gt;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="markdown" /><summary type="html"></summary></entry></feed>
