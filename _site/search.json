@@ -1,6 +1,20 @@
 [
   
     {
+      "title"      : "Physical Reservoir Computing",
+      "url"        : "/blog/2020/05/02/physical-reservoir-computing/",
+      "date"       : "2020-05-02 00:00:00 -0500",
+      "shortdate"  : "May 02, 2020"
+    } ,
+  
+    {
+      "title"      : "Good Scientific Graphs",
+      "url"        : "/blog/2020/03/28/good-scientific-graphs/",
+      "date"       : "2020-03-28 00:00:00 -0500",
+      "shortdate"  : "March 28, 2020"
+    } ,
+  
+    {
       "title"      : "Markdown Template",
       "url"        : "/blog/2020/03/22/markdown-template/",
       "date"       : "2020-03-22 00:00:00 -0500",

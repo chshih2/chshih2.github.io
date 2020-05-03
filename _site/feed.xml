@@ -1,4 +1,371 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-03-22T13:20:49-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">Markdown Template</title><link href="http://localhost:4000/blog/2020/03/22/markdown-template/" rel="alternate" type="text/html" title="Markdown Template" /><published>2020-03-22T00:00:00-05:00</published><updated>2020-03-22T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/03/22/markdown-template</id><content type="html" xml:base="http://localhost:4000/blog/2020/03/22/markdown-template/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-05-03T17:02:33-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">Physical Reservoir Computing</title><link href="http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/" rel="alternate" type="text/html" title="Physical Reservoir Computing" /><published>2020-05-02T00:00:00-05:00</published><updated>2020-05-02T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/05/02/physical-reservoir-computing</id><content type="html" xml:base="http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;Reservoir computing (RC) is derived from recurrent neural network (RNN).
+They are different from RNN in that the weights on the recurrent connections are
+not trained (this part is called a reservoir), but only the weights in the
+readout are trained to map to the desired value.
+The basic frameworks include &lt;a href=&quot;#ESN&quot;&gt;&lt;strong&gt;echo state network&lt;/strong&gt;&lt;/a&gt; (ESN) and
+&lt;a href=&quot;*LSM&quot;&gt;&lt;strong&gt;liquid state machine&lt;/strong&gt;&lt;/a&gt; (LSM).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;RC.png&quot; alt=&quot;conventional / physical RC&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Physical reservoir computing (RC) follows the concept of reservoir and readout,
+but it uses reservoirs based on physical phenomena.
+The motivation for the physical implementation of reservoirs is to realize fast
+information processing devices with low learning costs.
+It also has advantage in hardware implementation without adaptive updating.
+While it seems any physical dynamical systems can replace RNNs, there are some
+&lt;a href=&quot;#requirements&quot;&gt;&lt;strong&gt;requirements&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This note summarizes parts of
+&lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S0893608019300784&quot;&gt;Recent advances in physical reservoir computing: A review&lt;/a&gt; that relate to
+morphological computing, control, and frameworks with biological neurons.
+This paper categorizes physical reservoirs based on the type of
+&lt;a href=&quot;#dynamics&quot;&gt;&lt;strong&gt;dynamical system&lt;/strong&gt;&lt;/a&gt; and &lt;a href=&quot;#physics&quot;&gt;&lt;strong&gt;physical phenomenon&lt;/strong&gt;&lt;/a&gt;.
+It also discusses the &lt;a href=&quot;#challenges&quot;&gt;&lt;strong&gt;challenges&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;heading-basic-framework-of-rc&quot;&gt;Basic framework of RC&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a name=&quot;ESN&quot;&gt;ESN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\bf{x}(n) = \bf{f} ( W^{in} \bf{u}(n) + W \bf{x} (n-1) )&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\bf{y}(n) = W^{out} \bf{x}(n)&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is discrete time, &lt;script type=&quot;math/tex&quot;&gt;\bf{u}(n)&lt;/script&gt; is the input, &lt;script type=&quot;math/tex&quot;&gt;\bf{x}(n)&lt;/script&gt; is the
+reservoir state, &lt;script type=&quot;math/tex&quot;&gt;\bf{y}(n)&lt;/script&gt; is the output,
+and &lt;script type=&quot;math/tex&quot;&gt;\bf{f}&lt;/script&gt; is the activation function.
+The weight &lt;script type=&quot;math/tex&quot;&gt;W^{in}&lt;/script&gt; is for the input-reservoir connections,
+&lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt; is the weight in the reservoir,
+and &lt;script type=&quot;math/tex&quot;&gt;W^{out}&lt;/script&gt; is the weight matrix in the readout.
+Only &lt;script type=&quot;math/tex&quot;&gt;W^{out}&lt;/script&gt; is trained to minimize the difference between the network output
+and the desired output.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a name=&quot;LSM&quot;&gt;LSM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The purpose of LSM is to develop biologically relevant learning models using
+spiking neural networks (SNNs) with recurrent connectivity.
+Therefore, the reservoir units are typically given by excitatory and inhibitory
+spiking neurons,
+and the connection between neurons depends on the distance between their positions.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\bf{x}(t) = (\bf{L}^M u)(t)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\bf{y}(t) = \bf{f}^M (\bf{x}(t))&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; follow the denotation in ESN,
+and &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; represents continuous time.
+The output &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt; here is encoded as a spike sequence,
+&lt;script type=&quot;math/tex&quot;&gt;\bf{L}^M&lt;/script&gt; is the filter for transforming the input into the reservoir state,
+and &lt;script type=&quot;math/tex&quot;&gt;\bf{f}^M&lt;/script&gt; is simply a readout mapping.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a name=&quot;echo&quot;&gt;Echo state property / Fading memory property&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In order to approximate the desired output, the RNN-based reservoir must have
+the echo state property, also known as fading memory property.
+It means that the outputs corresponding to inputs that are close in
+the recent past are close even if those input are very different in the distant
+past, as if the system forgot earlier memory.
+The property can be obtained if the spectral radius (i.e. the maximum absolute
+eigenvalue of &lt;script type=&quot;math/tex&quot;&gt;W&lt;/script&gt;) is less than unity for any input.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-requirements&quot;&gt;&lt;a name=&quot;requirements&quot;&gt;&lt;/a&gt;Requirements&lt;/h1&gt;
+
+&lt;p&gt;These are the requirements for a physical reservoir to efficiently solve
+computational tasks.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;High dimensionality&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;By mapping the inputs into high-dimensional space, it might facilitate the
+separation of originally inseparable inputs.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nonlinearity&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It is also for input separation.
+Moreover, it can be useful for extracting nonlinear dependencies of inputs
+in prediction tasks.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fading memory (short-term memory)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It corresponds to the &lt;a href=&quot;#echo&quot;&gt;&lt;strong&gt;echo state property&lt;/strong&gt;&lt;/a&gt; in conventional RC.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Separation property&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It is required to separate the responses of a reservoir to distinct signals into
+different classes, and to be insensitive to unessential noises.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-dynamical-system&quot;&gt;&lt;a name=&quot;dynamics&quot;&gt;&lt;/a&gt;Dynamical system&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Delayed dynamical system&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{d\bf{x}(t)}{dt} = F(t,\bf{x}(t),\bf{x}(t-\tau))&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; is a function determining the flow of the system,
+and &lt;script type=&quot;math/tex&quot;&gt;\tau&gt;0&lt;/script&gt; is the delay period.&lt;/p&gt;
+
+&lt;p&gt;Here is the single-node reservoir with delayed feedback.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;delayed.png&quot; alt=&quot;RC with delayed dynamical system&quot; width=&quot;700&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The input is time-multiplexed by a mask function, and fe to the reservoir.
+In the reservoir, there are &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; virtual nodes dividing the delayed period &lt;script type=&quot;math/tex&quot;&gt;\tau&lt;/script&gt;.
+The time interval between two consecutive nodes is &lt;script type=&quot;math/tex&quot;&gt;\theta := \tau/N&lt;/script&gt;.
+The states of these nodes, &lt;script type=&quot;math/tex&quot;&gt;x(t-(N-i)\theta)&lt;/script&gt; for &lt;script type=&quot;math/tex&quot;&gt;i=1,...,N&lt;/script&gt;, are used as
+the reservoir state at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Cellular automata (CA)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;CA is a simple dynamical system with discrete time and states.
+The reservoir implementation facilitates its rich dynamics.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;cellular_automata.png&quot; alt=&quot;RC with cellular automata&quot; width=&quot;600&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Inputs are first mapped to the initial states of CA through an encoding procedure.
+Then, CA would start evolving based on its dynamics and the initial state.
+The entire state of the CA evolution is vectorized and used as a feature vector.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Coupled oscillators&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A system of &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; coupled oscillators can be described as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{d\bf{x}(t)}{dt}=F(\bf{x}_i(t))+G(\bf{x}_1(t),...,\bf{x}_N(t)),
+for i=1,...,N&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\bf{x}_i(t)&lt;/script&gt; is the oscillator &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; state,
+&lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; is the dynamics of individual oscillators, and &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; is the coupling function.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-physical-phenomenon&quot;&gt;&lt;a name=&quot;physics&quot;&gt;&lt;/a&gt;Physical phenomenon&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mechanical RC
+    &lt;ul&gt;
+      &lt;li&gt;Soft and compliant robots are difficult to control,
+ but its complex dynamics can be leveraged for RC.&lt;/li&gt;
+      &lt;li&gt;morphological computing: outsourcing computation to a physical body&lt;/li&gt;
+      &lt;li&gt;mass-spring:
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://link.springer.com/article/10.1007/s00422-012-0516-4&quot;&gt;pattern generators&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.frontiersin.org/articles/10.3389/fnbot.2017.00016/full&quot;&gt;property of the mechanical reservoir &amp;lt;-&amp;gt; locomotion learning&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;muscular hydrostat system
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://ieeexplore.ieee.org/document/6252774&quot;&gt;ESN-based controller for a soft arm&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.nature.com/articles/srep10487&quot;&gt;information processing&lt;/a&gt; (for control)&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://royalsocietypublishing.org/doi/10.1098/rsif.2014.0437&quot;&gt;body dynamics as computational source&lt;/a&gt; (for control)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;robot control
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://muse.jhu.edu/article/661286&quot;&gt;pneumatically driven soft arm&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;http://vigir.missouri.edu/~gdesouza/Research/Conference_CDs/IEEE_IROS_2013/media/files/1498.pdf&quot;&gt;spine-driven quadruped robot&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/5628051&quot;&gt;dog-like quadruped robot&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://ieeexplore.ieee.org/document/7354014&quot;&gt;less compliant quadrupedal robot&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Biological RC
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.frontiersin.org/10.3389/conf.fnins.2016.93.00027/event_abstract&quot;&gt;closed-loop reservoir with neurons to control a mobile robot&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.mitpressjournals.org/doi/abs/10.1162/isal_a_072&quot;&gt;discussion of RC on robot control&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-challenges&quot;&gt;&lt;a name=&quot;challenges&quot;&gt;&lt;/a&gt;Challenges&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;How to design physical reservoirs for achieving high computational performance?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How much computational power can be attained by individual physical RC systems?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;General issues include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;preprocessing:
+adequate information transformation of input data is necessary for good performance.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;scaling:
+temporal and spatial scaling of input data affects performance.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;design of reservoir:
+selection of physical systems, their size and haper-parameters is important.
+Mathematical analysis may help determining the settings.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;training algorithm for the readout:
+this affects computation speed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;evaluation of computational performance&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;task-dependent measure: accuracy…&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.mitpressjournals.org/doi/10.1162/neco.2009.01-09-947&quot;&gt;kernal quality&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://www.sciencedirect.com/science/article/abs/pii/S0893608007000433&quot;&gt;generalization ability&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;</content><author><name></name></author><category term="reservoir computing" /><summary type="html"></summary></entry><entry><title type="html">Good Scientific Graphs</title><link href="http://localhost:4000/blog/2020/03/28/good-scientific-graphs/" rel="alternate" type="text/html" title="Good Scientific Graphs" /><published>2020-03-28T00:00:00-05:00</published><updated>2020-03-28T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/03/28/good-scientific-graphs</id><content type="html" xml:base="http://localhost:4000/blog/2020/03/28/good-scientific-graphs/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;Here are all the most important features I use for making scientific graphs.&lt;/p&gt;
+
+&lt;p&gt;You can use python, R, Matlab or any other tools you use for calculation to do
+the visualization easily as well.
+I happened to work with people who deeply believe that humans are visual creature.
+Through out some time I did gain some benefits from making good visualization
+of the figures used in presentations, proposals and papers.&lt;/p&gt;
+
+&lt;p&gt;I use &lt;a href=&quot;https://www.adobe.com/products/illustrator.html&quot;&gt;Adobe Illustrator&lt;/a&gt; for &lt;a href=&quot;#layout&quot;&gt;&lt;strong&gt;layout&lt;/strong&gt;&lt;/a&gt;.
+I only go for the basic features needed that can mostly be achieved in keynote
+or ppt.
+The biggest advantages for using Illustrator here are just the &lt;a href=&quot;#vector&quot;&gt;&lt;strong&gt;vector graphics
+output&lt;/strong&gt;&lt;/a&gt; and &lt;a href=&quot;#layer&quot;&gt;&lt;strong&gt;layers&lt;/strong&gt;&lt;/a&gt; in my opinion.
+I use Plot2 for &lt;a href=&quot;#data-plot&quot;&gt;&lt;strong&gt;data plots&lt;/strong&gt;&lt;/a&gt;.
+To import &lt;a href=&quot;#images&quot;&gt;&lt;strong&gt;images&lt;/strong&gt;&lt;/a&gt;, I used HTML syntax like how &lt;a href=&quot;http://apps.micw.org/apps/plot2/&quot;&gt;kushdilip&lt;/a&gt; did.
+For &lt;a href=&quot;#bookmarks&quot;&gt;&lt;strong&gt;bookmarks&lt;/strong&gt;&lt;/a&gt;, I got the answer from &lt;a href=&quot;https://stackoverflow.com/questions/5319754/cross-reference-named-anchor-in-markdown&quot;&gt;Steve&lt;/a&gt;.
+For &lt;a href=&quot;#equations&quot;&gt;&lt;strong&gt;equations&lt;/strong&gt;&lt;/a&gt;, I used &lt;a href=&quot;https://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-section&quot;&gt;&lt;a name=&quot;sections&quot;&gt;&lt;/a&gt;Section&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# This gives me titles
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The format of sentences and paragraphs follows LaTex. Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;`&lt;/code&gt; … &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;`&lt;/code&gt; for &lt;a href=&quot;https://www.markdownguide.org/basic-syntax/&quot;&gt;escaping&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;heading-this-gives-me-titles&quot;&gt;This gives me titles&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-list&quot;&gt;&lt;a name=&quot;lists&quot;&gt;&lt;/a&gt;List&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*  List
+    * Item
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Use indents to create nested items. The symbols will be different at each level automatically.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;List
+    &lt;ul&gt;
+      &lt;li&gt;Item&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1.  List 1
+    1. Item 1
+    2. Item 2
+2.  List 2
+    1. Item 1
+    2. Item 2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;List 1
+    &lt;ol&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;List 2
+    &lt;ol&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-link&quot;&gt;&lt;a name=&quot;links&quot;&gt;&lt;/a&gt;Link&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go [there][1]
+[1]:https:...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-separation-lines&quot;&gt;&lt;a name=&quot;horizontals&quot;&gt;&lt;/a&gt;Separation Lines&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-image&quot;&gt;&lt;a name=&quot;images&quot;&gt;&lt;/a&gt;Image&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;img src=&quot;turtle.jpg&quot; alt=&quot;drawing&quot; width=&quot;200&quot;/&amp;gt;
+&amp;lt;img src=&quot;https://images.unsplash.com/photo-1518467166778-b88f373ffec7?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1778&amp;amp;q=80&quot; alt=&quot;turtle1&quot; width=&quot;200&quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;turtle.jpg&quot; alt=&quot;turtle2&quot; width=&quot;200&quot; /&gt;
+&lt;img src=&quot;https://images.unsplash.com/photo-1518467166778-b88f373ffec7?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1778&amp;amp;q=80&quot; alt=&quot;drawing&quot; width=&quot;200&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I used HTML instead of another common approach &lt;a href=&quot;https://www.adobe.com/products/illustrator.html&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;![]()&lt;/code&gt;&lt;/a&gt; because it's easier to scale the image under my theme template.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-bookmark&quot;&gt;&lt;a name=&quot;bookmarks&quot;&gt;&lt;/a&gt;Bookmark&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Take me [here](#bookmark)
+Put anchor point &amp;lt;a name=&quot;bookmark&quot;&amp;gt;&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;heading-equation&quot;&gt;&lt;a name=&quot;equations&quot;&gt;&lt;/a&gt;Equation&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$
+or
+\begin{equation}x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}\end{equation}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.&lt;/script&gt;
+
+&lt;p&gt;I use MathJax instead of generating images directly from LaTex because it makes searching easier.&lt;/p&gt;
+
+&lt;p&gt;To enable MathJax, do this in your script:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script type=&quot;text/javascript&quot; async
+  src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&amp;gt;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="ScientificGraphs" /><summary type="html"></summary></entry><entry><title type="html">Markdown Template</title><link href="http://localhost:4000/blog/2020/03/22/markdown-template/" rel="alternate" type="text/html" title="Markdown Template" /><published>2020-03-22T00:00:00-05:00</published><updated>2020-03-22T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/03/22/markdown-template</id><content type="html" xml:base="http://localhost:4000/blog/2020/03/22/markdown-template/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;p&gt;Here are all the most important features I need for my post template and their

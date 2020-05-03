@@ -5,6 +5,14 @@
 <lastmod>2020-03-22T00:00:00-05:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/blog/2020/03/28/good-scientific-graphs/</loc>
+<lastmod>2020-03-28T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/</loc>
+<lastmod>2020-05-02T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/blog/tags/</loc>
 </url>
 <url>
@@ -19,5 +27,9 @@
 <url>
 <loc>http://localhost:4000/blog/2020/03/22/markdown-template/</loc>
 <lastmod>2020-03-22T11:32:59-05:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/</loc>
+<lastmod>2020-05-03T13:06:13-05:00</lastmod>
 </url>
 </urlset>
