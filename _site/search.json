@@ -1,6 +1,13 @@
 [
   
     {
+      "title"      : "Git Cheat Sheet",
+      "url"        : "/blog/2020/05/08/git/",
+      "date"       : "2020-05-08 00:00:00 -0500",
+      "shortdate"  : "May 08, 2020"
+    } ,
+  
+    {
       "title"      : "Physical Reservoir Computing",
       "url"        : "/blog/2020/05/02/physical-reservoir-computing/",
       "date"       : "2020-05-02 00:00:00 -0500",

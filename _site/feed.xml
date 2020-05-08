@@ -1,4 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-05-03T17:02:33-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">Physical Reservoir Computing</title><link href="http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/" rel="alternate" type="text/html" title="Physical Reservoir Computing" /><published>2020-05-02T00:00:00-05:00</published><updated>2020-05-02T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/05/02/physical-reservoir-computing</id><content type="html" xml:base="http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-05-08T15:18:07-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">Git Cheat Sheet</title><link href="http://localhost:4000/blog/2020/05/08/git/" rel="alternate" type="text/html" title="Git Cheat Sheet" /><published>2020-05-08T00:00:00-05:00</published><updated>2020-05-08T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/05/08/git</id><content type="html" xml:base="http://localhost:4000/blog/2020/05/08/git/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;Common Git commends I used especially when working with others.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;heading-list-out-all-branches&quot;&gt;List out all branches&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git branch -a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;heading-switch-to-branch-a&quot;&gt;Switch to branch A&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout A
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;heading-create-a-new-branch-a-from-an-old-branch-b&quot;&gt;Create a new branch A from an old branch B&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout -b A B
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;heading-take-updates-of-master-to-local-branch-a&quot;&gt;Take updates of master to local branch A&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout A
+git fetch origin
+git merge origin/master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;heading-take-a-file-from-another-branch-a-to-the-working-branch&quot;&gt;Take a file from another branch A to the working branch&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout A -- my/dir/to/file
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Or copy the file with a new name&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git show A:my/dir/to/file &amp;gt; file_rename
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;heading-get-a-clean-working-directory--retrieve-the-working-status&quot;&gt;Get a clean working directory / Retrieve the working status&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Git stash
+Git stash pop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;heading-change-origin-of-your-git-repository&quot;&gt;Change &quot;origin&quot; of your GIT repository&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git remote rm origin
+git remote add origin git@github.com:…git
+git config master.remote origin
+git config master.merge refs/heads/master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="git" /><summary type="html"></summary></entry><entry><title type="html">Physical Reservoir Computing</title><link href="http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/" rel="alternate" type="text/html" title="Physical Reservoir Computing" /><published>2020-05-02T00:00:00-05:00</published><updated>2020-05-02T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/05/02/physical-reservoir-computing</id><content type="html" xml:base="http://localhost:4000/blog/2020/05/02/physical-reservoir-computing/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;p&gt;Reservoir computing (RC) is derived from recurrent neural network (RNN).
