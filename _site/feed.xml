@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-05-08T15:18:07-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">Git Cheat Sheet</title><link href="http://localhost:4000/blog/2020/05/08/git/" rel="alternate" type="text/html" title="Git Cheat Sheet" /><published>2020-05-08T00:00:00-05:00</published><updated>2020-05-08T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/05/08/git</id><content type="html" xml:base="http://localhost:4000/blog/2020/05/08/git/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-10-06T13:44:54-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Catuntu Recall</title><subtitle>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</subtitle><entry><title type="html">PyTorch Continue Training</title><link href="http://localhost:4000/blog/2020/10/06/Pytorch-continue-training/" rel="alternate" type="text/html" title="PyTorch Continue Training" /><published>2020-10-06T00:00:00-05:00</published><updated>2020-10-06T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/10/06/Pytorch-continue-training</id><content type="html" xml:base="http://localhost:4000/blog/2020/10/06/Pytorch-continue-training/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;On the [PyTorch documentation][1], saving and loading models seem extremely easy.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;torch.save(model, PATH)
+model = torch.load(PATH)
+model.eval()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I implemented this, and test out with the following procedure:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Train a few epochs with a for loop. Record the validation loss and save the model once in a while using &lt;strong&gt;&lt;em&gt;torch.save(model, PATH)&lt;/em&gt;&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Stop training once the validation loss improves clearly.&lt;/li&gt;
+  &lt;li&gt;Load the saved model and evaluate using &lt;strong&gt;&lt;em&gt;model = torch.load(PATH)&lt;/em&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;em&gt;model.eval()&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Continue training&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Step 3 gives me the same scale of loss as in step 2, but when I resume training in step 4, the loss restarts from the scale in step 1.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;heading-load-all-the-states&quot;&gt;Load all the states&lt;/h1&gt;
+&lt;p&gt;It turns out that if we want to resume training, we also need to save the optimizer parameters. I implement the code suggested [here][2], and the modifications are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Save the optimizer states as well.
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;state = {'epoch': epoch + 1,
+     'model': model.state_dict(),
+     'optimizer': optimizer.state_dict()}
+torch.save(state, filename+'.pt')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Same as before.&lt;/li&gt;
+  &lt;li&gt;Define the model and optimizer, and load the parameters using this function
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def load_checkpoint(model, optimizer, filename='checkpoint.pth.tar'):
+start_epoch = 0
+if os.path.isfile(filename):
+    print(&quot;=&amp;gt; loading checkpoint '{}'&quot;.format(filename))
+    checkpoint = torch.load(filename)
+    start_epoch = checkpoint['epoch']
+    model.load_state_dict(checkpoint['state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer'])
+    print(&quot;=&amp;gt; loaded checkpoint '{}' (epoch {})&quot;
+              .format(filename, checkpoint['epoch']))
+else:
+    print(&quot;=&amp;gt; no checkpoint found at '{}'&quot;.format(filename))
+
+return model, optimizer, start_epoch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;After loading the states, we also need to assign the states to the right device.
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;model, optimizer, start_epoch = load_checkpoint(model, optimizer, filename)
+ model = model.to(device)
+ for state in optimizer.state.values():
+     for k, v in state.items():
+         if isinstance(v, torch.Tensor):
+             state[k] = v.to(device)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;[1]https://pytorch.org/tutorials/beginner/saving_loading_models.html
+[2]https://github.com/pytorch/pytorch/issues/2830&lt;/p&gt;</content><author><name></name></author><category term="PyTorch" /><summary type="html"></summary></entry><entry><title type="html">Git Cheat Sheet</title><link href="http://localhost:4000/blog/2020/05/08/git/" rel="alternate" type="text/html" title="Git Cheat Sheet" /><published>2020-05-08T00:00:00-05:00</published><updated>2020-05-08T00:00:00-05:00</updated><id>http://localhost:4000/blog/2020/05/08/git</id><content type="html" xml:base="http://localhost:4000/blog/2020/05/08/git/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
 &lt;/script&gt;
 
 &lt;p&gt;Common Git commends I used especially when working with others.&lt;/p&gt;

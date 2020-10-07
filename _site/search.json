@@ -1,6 +1,13 @@
 [
   
     {
+      "title"      : "PyTorch Continue Training",
+      "url"        : "/blog/2020/10/06/Pytorch-continue-training/",
+      "date"       : "2020-10-06 00:00:00 -0500",
+      "shortdate"  : "October 06, 2020"
+    } ,
+  
+    {
       "title"      : "Git Cheat Sheet",
       "url"        : "/blog/2020/05/08/git/",
       "date"       : "2020-05-08 00:00:00 -0500",
