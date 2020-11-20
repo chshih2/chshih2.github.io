@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Zsh Basics and a Script for Grid Search | Cathy @ UIUC</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Zsh Basics and a Script for Grid Search" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="zsh script that does grid search for tuning parameters" />
+<meta property="og:description" content="zsh script that does grid search for tuning parameters" />
+<link rel="canonical" href="http://localhost:4000/blog/2020/11/20/Zsh-Shell-Grid-Search/" />
+<meta property="og:url" content="http://localhost:4000/blog/2020/11/20/Zsh-Shell-Grid-Search/" />
+<meta property="og:site_name" content="Cathy @ UIUC" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-20T00:00:00-06:00" />
+<script type="application/ld+json">
+{"dateModified":"2020-11-20T00:00:00-06:00","url":"http://localhost:4000/blog/2020/11/20/Zsh-Shell-Grid-Search/","datePublished":"2020-11-20T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2020/11/20/Zsh-Shell-Grid-Search/"},"description":"zsh script that does grid search for tuning parameters","@type":"BlogPosting","headline":"Zsh Basics and a Script for Grid Search","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<meta name="keywords" content="tuningparameters" />
+
+
+
+
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Cathy @ UIUC" />
+    <link href='/assets/stylesheets/blog.css' rel="stylesheet" type="text/css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<script>window.Modernizr || document.write('<script src="/assets/javascripts/modernizr-2.8.3.min.js"><\/script>')</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="/assets/javascripts/jquery-3.3.1.min.js"><\/script>')
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+<script>
+    window.Pace || document.write('<script src="/assets/javascripts/pace.min.js"><\/script>')
+</script>
+
+    
+</head>
+
+<body>
+    
+
+    <!--[if IE]>
+    <p class="site-notice">You are using an outdated browser. Please <a href="http://browsehappy.com/" target="_blank">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true" target="_blank">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+<noscript>
+    <p class="site-notice">This site requires JavaScript. Here are the instructions <a href="http://www.enable-javascript.com/" target="_blank">how to enable JavaScript in your web browser</a>.</p>
+</noscript>
+
+    <div class="nav-wrapper overlay-wrapper">
+    <div class="nav-form overlay-form">
+        <span class="overlay-header menu">Menu</span>
+        <a class="btn-close">Close</a>
+        <div class="results">
+            <ul>
+                <li><a href="/blog/categories/">Categories</a></li>
+                <li><a href="/blog/tags/">Tags</a></li>
+                <li><a href="">About</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="search-wrapper overlay-wrapper">
+    <div class="search-form overlay-form">
+        <input type="text" class="overlay-header search-field" placeholder="Search...">
+        <a class="btn-close">Close</a>
+        <ul class="results"></ul>
+    </div>
+</div>
+
+
+    <div id="page" class="hentry">
+        <header class="the-header">
+    <div class="unit-head">
+        <div class="unit-inner unit-head-inner">
+            <nav class="nav-global">
+                <ul>
+                    <li class="logo nav-link">
+                        <button class="btn-menu" title="Menu"></button>
+                        <a href="/blog/">Cathy @ UIUC</a>
+                        <!--[if !IE]> -->
+                        <button class="btn-search" title="Search"></button>
+                        <!-- <![endif]-->
+                    </li>
+                    <li class="nav-link"><a title="Categories" href="/blog/categories/">Categories</a></li>
+                    <li class="nav-link"><a title="Tags" href="/blog/tags/">Tags</a></li>
+                    <!--[if !IE]> -->
+                    <li class="nav-link"><a title="Search" class="btn-search" href="#">Search</a></li>
+                    <!-- <![endif]-->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+        <div class="body animated fadeInDown" role="main">
+            <div class="unit-body">
+                <div class="unit-inner unit-body-inner">
+                    <div class="entry-content">
+                        <article class="unit-article layout-post">
+    <div class="unit-inner unit-article-inner">
+        <div itemscope itemtype="http://schema.org/Article" class="content">
+            <header>
+                <div class="unit-head">
+                    <div class="unit-inner unit-head-inner">
+                        <h1 class="entry-title" itemprop="name">Zsh Basics and a Script for Grid Search</h1>
+                    </div>
+                </div>
+            </header>
+            <div class="bd article-content">
+                <div class="entry-content">
+                    <div class="meta">
+                        <p class="date-publish">
+                            Published:
+                            <time itemprop="datePublished" class="date-pub updated"
+                                title="2020-11-20T00:00:00-06:00" datetime="2020-11-20T00:00:00-06:00">November 20, 2020 </time>
+                            by
+                            <a class="author" href="/" rel="author" title="Show Author">
+                                <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                    <span itemprop="name"></span>
+                                </span>
+                            </a>
+                            
+                                <a class="license-icon" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" title="Show License">
+                                    <img alt="Creative Commons Licence" style="border-width:0" src="/assets/images/theme/cc-by-sa.png"  height="16" width="80"/>
+                                </a>
+                            
+                            
+                        </p>
+                        <ul class="list-category list-linear">
+                            <li class="list-head">Categories: </li>
+                             
+     
+        <li>
+            <a href="/blog/categories/#zsh" title="zsh">
+            zsh <span>1</span></a>
+        </li>
+    
+
+
+
+                        </ul>
+                        <ul class="list-tag list-linear">
+                            <li class="list-head">Tags: </li>
+                             
+    
+        
+        <li>
+            <a href="/blog/tags/#tuningparameters" title="tuningparameters">tuningparameters <span>1</span></a>
+        </li>
+    
+
+
+
+
+                        </ul>
+                    </div>
+                    <div itemprop="articleBody">
+                        <script type="text/javascript" async="" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p>Last year, when Apple replaces bash with zsh as the default shell in macOS Catalina, I was half-forced to switch over. The process turned out to be a breeze, and I am thrilled by how many features zsh offers. First of all, I can now use the themes that work for me using  <a href="https://github.com/robbyrussell/oh-my-zsh">Oh-My-Zsh</a> . Other than that, I like the fact that in Zsh, Tab completion is like a drop-down menu, and I can navigate between options. I can also type the directories with only part of the words, and Zsh will fix the spelling and completion of terms. I also feel Zsh shows a more precise error when something goes wrong. That saves me a bunch of time! These are the reasons why I did a script in zsh when today I needed to do a grid search.</p>
+
+<p>Grid search is an easy method to tune hyper-parameters by tracking the performance of grids. One of the easiest ways, known as Exhaustive Grid Search, is to specify grids of parameter values explicitly. Like <a href="https://scikit-learn.org/stable/modules/grid_search.html">sklearn</a>, some libraries provide this function, but sometimes it's not intuitive to couple with our customized model. Since we can write for loops and record the performance directly, why not just do a shell script on top of our python code?  The code is <a href="#grid_search"><strong>here</strong></a>, and you're welcome to skip the basics.</p>
+
+<hr />
+<h1 id="heading-for-loop">For Loop</h1>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for (( i = 0; i &lt; 10; i++ )); do
+  echo $i
+done
+
+</code></pre></div></div>
+
+<p>It will output ten lines with numbers from 0 to 9.
+What if we don't want the output to be multiple lines? We can use "-n" flag!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for (( i = 0; i &lt; 10; i++ )); do
+  echo -n $i
+done
+</code></pre></div></div>
+
+<p>This gives us "0123456789%"</p>
+
+<p>Since we need to define the grid ourselves, we can give a list.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>list=(2 3 5 7 11 13)
+for i in $list; do
+  echo -n $i
+done
+</code></pre></div></div>
+
+<p>The output is "23571113%"</p>
+
+<p>To give spaces between the number, we can put a space " " after "$i". This is because the script connect the strings for us this way.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>list=(2 3 5 7 11 13)
+for i in $list; do
+  echo -n $i" "
+done
+</code></pre></div></div>
+
+<p>Now, we have separate numbers "2 3 5 7 11 13 %".</p>
+
+<h1 id="heading-write-to-file">Write to File</h1>
+<p>As in bash, zsh uses redirection. That means if we want to write these numbers to a file named "abc.txt" we can do</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>list=(2 3 5 7 11 13)
+for i in $list; do
+  echo -n $i" "&gt;&gt;abc.txt
+done
+</code></pre></div></div>
+<p>Then the content of the text file will be the same as the previous output.
+The operator "&gt;" writes the output to the file while "»" appends the output to the file.</p>
+
+<p>Writing output of a python script to the text file is also easy.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>list=(2 3 5 7 11 13)
+for I in $list; do
+  echo -n $I" "&gt;&gt;abc.txt
+  python print10times.py $i &gt;&gt; abc.txt
+done
+</code></pre></div></div>
+
+<p>The content inside "abc.txt" is</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2 2222222222
+3 3333333333
+5 5555555555
+7 7777777777
+11 11111111111111111111
+13 13131313131313131313
+</code></pre></div></div>
+
+<p>My "print10times.py" is simply</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
+a=sys.argv[1]
+print(a*10)
+</code></pre></div></div>
+
+<h1 id="heading-grid-search"><a name="grid_search"></a>Grid Search</h1>
+
+<p>To do the grid search, we only need to modify the above code to have multiple for loops, and record the loss or accuracy of each model.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parameter_name="list"
+parameter_name2="list2"
+
+list="2 3 5 7 11 13"
+list2="0.1 0.3"
+
+for i ( $=list ); do
+  for lr ( $=list2 ); do
+    echo -n $i" "$lr" "&gt;&gt;abc.txt
+    python last_loss.py $i &gt;&gt; abc.txt
+  done
+done
+
+python render_grid.py $list $list2 $parameter_name $parameter_name2
+
+
+</code></pre></div></div>
+
+<p>Since I want to pass in the lists I have to "render_grid.py" for post data processing, I change the list into string. Then, I use "$=list" to do <a href="[zsh: 14 Expansion](http://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion)">expansion</a> in the for loop conditions.</p>
+
+<p>In summary, the for loops go through every model with value in the parameter list and record each models' losses. Then we can use <a href="[Creating annotated heatmaps — Matplotlib 3.1.2 documentation](https://matplotlib.org/3.1.1/gallery/images_contours_and_fields/image_annotated_heatmap.html)">heatmap</a> function to visualize which pair results in smallest loss. Here is what I do in "render_grid.py"</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
+import matplotlib.pyplot as plt
+import numpy as np
+
+with open("abc.txt") as f:
+    data=f.readlines()
+
+
+float_data=[]
+for index in range(len(data)):
+    float_data.append([float(value) for value in data[index].split("\n")[0].split(" ")])
+
+rows=list(map(float,sys.argv[1].split(" ")))
+columns=list(map(float,sys.argv[2].split(" ")))
+
+table=[]
+index=0
+
+for i in range(len(rows)):
+    column=[]
+    for j in range(len(columns)):
+        column.append(float_data[index][2])
+        print(index,float_data[index][2])
+        index+=1
+    table.append(column)
+
+fig, ax = plt.subplots()
+im = ax.imshow(table)
+
+ax.set_xticks(np.arange(len(columns)))
+ax.set_yticks(np.arange(len(rows)))
+ax.set_xticklabels(columns)
+ax.set_yticklabels(rows)
+ax.set_xlabel(sys.argv[3])
+ax.set_ylabel(sys.argv[4])
+
+for i in range(len(rows)):
+    for j in range(len(columns)):
+        text = ax.text(j, i, "%.2f"%table[i][j],
+                       ha="center", va="center", color="w")
+
+ax.set_title("loss")
+fig.tight_layout()
+plt.show()
+
+</code></pre></div></div>
+<p>Basically, it reads "abc.txt" and generates a table that can be used to produce the heat map</p>
+
+<center><img src="heatmap.png" alt="heat map of the grid search" width="500" /></center>
+
+<p>I generated the loss randomly here. If these are the real losses I got, a reasonable choice of (parameter, parameter2) from (list,list2) is the minima (0.1,7.0).</p>
+
+
+                    </div>
+                </div>
+            </div>
+            <footer class="unit-foot">
+                <div class="unit-inner unit-foot-inner">
+                    <div class="post-buttons">
+                        <a class="internal gotop" href="#page" title="Back to Top">Back to Top</a>
+                        
+                    </div>
+                    <nav class="pagination">
+                        
+                            <a class="internal" rel="prev" href="/blog/2020/11/12/System-Identification/" title=" 'System Identification and Laplace Transform'"> ← System Identification and Laplace Transform</a>
+                        
+                        
+                    </nav>
+                </div>
+            </footer>
+            <div class="misc-content">
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="the-footer">
+    <div class="unit-foot">
+        <div class="unit-inner unit-foot-inner">
+            <div class="misc vcard">
+                <div class="about">
+                    <h4><a href="">About</a></h4>
+                    
+                        <p>Machine Learning / Reinforcement Learning / Soft Robot ... without nagging</p>
+                    
+                    <p><small>Theme <a href="https://github.com/yizeng/jekyll-theme-simple-texture" target="_blank">Simple Texture</a> powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a>.</small></p>
+                </div>
+                <div class="social-links">
+                    
+                    <a class="ico-rss" href="/feed.xml" rel="me" target="_blank" title="feed"></a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="internal back-to-top">Back to Top</a>
+</footer>
+
+    </div>
+
+    <script>
+$(document).ready(function () {
+    var offset = 50,
+        duration = 500,
+        width = 960;
+    $(window).scroll(function () {
+        if ($(window).width() > width) {
+            if ($(this).scrollTop() > offset) {
+                $('footer').css('top', '20px');
+                $('footer .back-to-top').fadeIn(duration);
+            } else {
+                $('footer').css('top', 'auto');
+                $('footer .back-to-top').fadeOut(duration);
+            }
+        }
+    });
+    $(window).resize(function () {
+        if ($(window).width() < width) {
+            $('footer').css('top', 'auto');
+            $('footer .back-to-top').fadeOut(duration);
+        }
+        if ($(window).width() >= width && $(this).scrollTop() > offset) {
+            $('footer').css('top', '20px');
+            $('footer .back-to-top').fadeIn(duration);
+        }
+    });
+
+    $('footer .back-to-top, .gotop').on('click', function (event) {
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: 0
+        }, duration);
+        return false;
+    });
+
+    $('.show-hidden').on('click', function () {
+        $(this).parent().next().toggleClass("hidden");
+        $(this).toggleClass("hidden");
+    });
+});
+</script>
+
+<!-- Show menu overlay + Jekyll Simple Search option -->
+<script src="/assets/javascripts/jekyll-search.jquery.js"></script>
+<script>
+$(document).ready(function () {
+    $('.search-field').simpleJekyllSearch({
+      jsonFile: '/search.json',
+      template: '<li><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></li>',
+      searchResults: '.search-wrapper .results',
+      searchResultsTitle: '<h4>Search results</h4>',
+      noResults: '<p>Oh shucks<br/><small>Nothing found :(</small></p>'
+    });
+});
+
+(function ($, window, undefined) {
+    var closeOverlay = function () {
+        $('.nav-wrapper, .search-wrapper').removeAttr('style');
+        $(".nav-form, .search-form").removeClass('active');
+        $("body").removeClass('nav-overlay search-overlay');
+    };
+
+    $('.nav-global .btn-search').on('click', function () {
+        $('.search-wrapper').css({display: "block"});
+        $(".search-form").addClass('active');
+        $(".search-form").find('input').focus();
+        $("body").addClass('search-overlay');
+    });
+
+    $('.nav-global .btn-menu').on('click', function () {
+        $('.nav-wrapper').css({display: "block"});
+        $(".nav-form").addClass('active');
+        $(".nav-form .search-field").prop('disabled', true);
+        $("body").addClass('nav-overlay');
+    });
+
+    $('.nav-wrapper .btn-close, .search-wrapper .btn-close').on('click', function () {
+        closeOverlay();
+    });
+
+    $(document).on('keyup', function (e) {
+        if (e.keyCode === 27) {
+            closeOverlay();
+        }
+    });
+})(jQuery, window);
+</script>
+
+<script src='//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-buttons.min.js'></script>
+<script src="/assets/javascripts/unveil/jquery.unveil.min.js"></script>
+
+<script>
+    window.jQuery.fancybox || document.write('<script src="/assets/javascripts/fancybox/jquery.fancybox.pack.js?v=2.1.4"><\/script>')
+    window.jQuery.fancybox.helpers.buttons || document.write('<script src="/assets/javascripts/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5"><\/script>')
+</script>
+
+<script>
+    $("head").append('<link rel="stylesheet" href="/assets/javascripts/fancybox/jquery.fancybox.css?v=2.1.4" type="text/css" />');
+    $("head").append('<link rel="stylesheet" href="/assets/javascripts/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5" type="text/css" />');
+    $(".post-image").fancybox({
+        prevEffect: 'none',
+        nextEffect: 'none',
+        closeBtn: true,
+        helpers: {
+            title: {
+                type: 'float'
+            }
+        }
+    });
+    $(document).ready(function () {
+        $(".post-image > img").unveil(450);
+    });
+</script>
+
+</body>
+
+</html>
