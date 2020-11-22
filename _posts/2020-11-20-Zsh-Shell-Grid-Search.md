@@ -5,7 +5,7 @@ description: "zsh script that does grid search for tuning parameters"
 categories: [zsh]
 tags: [tuningparameters]
 redirect_from:
-- /2020/11/22/
+- /2020/11/20/
 ---
 <script type="text/javascript" async
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
